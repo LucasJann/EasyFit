@@ -1,0 +1,59 @@
+form {
+  margin: auto;
+  max-width: 20rem;
+}
+
+.container {
+  text-align: center;
+}
+
+.loginBtn {
+  width: 20%;
+  margin: 0.2rem 0 0 15.3rem;
+  padding: 0.2rem;
+  font-size: 0.9em;
+}
+
+.image {
+  width: 98%;
+  margin: 0.8rem 0 0rem 0;
+  border-radius: 0.5rem;
+}
+
+input {
+  width: 95%;
+  border: 2px solid #ccc9c9;
+  padding: 0.4rem;
+  font-size: large;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  border-radius: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.inputError {
+  border: 1px solid #aa0b20;
+  background-color: #eccbcf;
+}
+
+.errorMessage {
+  margin: auto;
+  color: #ca3e51;
+}
+
+.registerBtn {
+  width: 96%;
+  border: none;
+  padding: 0.4em;
+  font-size: 1em;
+  margin-top: 0.3rem;
+  border-radius: 5px;
+}
+
+@media (min-width: 279px) and (max-width: 333px) {
+  .loginBtn {
+    width: 20%;
+    margin: 0.2rem 0 0 13.3rem;
+    padding: 0.2rem;
+    font-size: 0.9em;
+  }
+}

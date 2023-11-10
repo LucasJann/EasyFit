@@ -1,0 +1,35 @@
+.container {
+  right: 1rem;
+  margin: auto;
+  position: relative;
+  max-width: 20rem;
+  text-align: center;
+}
+
+.image {
+  top: 2rem;
+  left: 2rem;
+  width: 70%;
+  position: relative;
+}
+
+ul {
+  font-size: 4em;
+  list-style: none;
+}
+
+button {
+  width: 70%;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  background-color: #ab9c15;
+}
+
+button:hover {
+  background-color: #8a7a0f;
+}
+

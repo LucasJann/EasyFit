@@ -1,0 +1,26 @@
+.container {
+  text-align: start;
+}
+
+.image {
+  width: 100%;
+  margin: 0.5rem 0 2rem 0;
+  border-radius: 0.5rem;
+}
+
+.paragraph {
+  color: rgb(153, 159, 165);
+  margin: -0.4rem 0 0 0.2rem;
+  cursor: pointer;
+}
+
+.paragraph:hover {
+  color: rgb(78, 82, 87);
+}
+
+.loginBtn {
+  width: 95%;
+  border: none;
+  margin: 4rem 0 0 0.4rem;
+  padding: 0.4em;
+}

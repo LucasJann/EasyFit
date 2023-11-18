@@ -1,219 +1,311 @@
 import classes from "./Goal.module.css";
-import GoalItem from "./GoalItem";
+import Card from "../Layout/Card";
 
-import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
-
-const formatMoney = (value) => {
-  const formatter = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    minimumFractionDigits: 2,
-  });
-
-  return formatter.format((value / 100).toFixed(2));
-};
+import { Fragment, useEffect, useState } from "react";
 
 const Goal = () => {
+  const storedUserJSON = localStorage.getItem("foundUser");
+  const loggedUser = JSON.parse(storedUserJSON);
+  const [imcValue, setImcValue] = useState();
 
-  const loggedUserJSON = localStorage.getItem('foundUser');
-  const loggedUser = JSON.parse(loggedUserJSON);
-
-  const storedGoals = loggedUser.goals;
-  const storedBalance = loggedUser.balance;
-
-  const [goal, setGoal] = useState("");
-  const [items, setItems] = useState([]);
-  const [render, setRender] = useState(false);
-  const [message, setMessage] = useState(false);
-  const [goalText, setGoalText] = useState("");
-  const [isGoalFilled, setIsGoalFilled] = useState(false);
-  const [isTextFilled, setIsTextFilled] = useState(false);
-  const [callerEffect, setCallerEffect] = useState(false);
-
-  const itemsUpdated = useSelector((state) => state.call.caller);
-
+  useEffect(() => {
+    setImcValue(loggedUser.imc.toFixed(2));
+  }, [loggedUser]);
   const navigation = useNavigate();
 
-  useEffect(() => {
-    if (storedGoals === "") {
-      setItems([""]);
-    } else {
-      const storedItems = storedGoals;
-      setItems(storedItems);
-    }
-  }, [itemsUpdated, callerEffect]);
-
-  useEffect(() => {
-    storedGoals[0] === "" ? setRender(false) : setRender(true);
-  }, [storedGoals]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://react-http-f8211-default-rtdb.firebaseio.com/logins.json"
-        );
-
-        if (!response.ok) {
-          throw new Error("Algo deu errado!");
-        }
-
-        const responseData = await response.json();
-
-        const storedUser = Object.values(responseData).find(
-          (user) => user.email === loggedUser.email
-        );
-
-        const updatedUserBalance = {
-          email: storedUser.email,
-          id: storedUser.id,
-          lastName: storedUser.lastName,
-          name: storedUser.name,
-          password: storedUser.password,
-          image: storedUser.image,
-          balance: storedUser.balance,
-          expenseItems: storedUser.expenseItems,
-          incomeItems: storedUser.incomeItems,
-          goals: loggedUser.goals,
-        };
-
-        const userKey = Object.keys(responseData).find(
-          (key) => responseData[key].email === storedUser.email
-        );
-
-        try {
-          await fetch(
-            `https://react-http-f8211-default-rtdb.firebaseio.com/logins/${userKey}.json`,
-            {
-              method: "PUT",
-              body: JSON.stringify(updatedUserBalance),
-            }
-          );
-        } catch {}
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, [callerEffect]);
-
-  const goalChange = (event) => {
-    let goalValue = event.target.value.replace(/\D/g, "");
-    const formattedBalance = formatMoney(goalValue);
-
-    setGoal(formattedBalance);
-
-    let validateValue = event.target.value.length;
-
-    if (validateValue > 0 && validateValue <= 21) {
-      setMessage(false);
-      setIsGoalFilled(true);
-    } else {
-      setMessage(true);
-      setIsGoalFilled(false);
-    }
+  const onUnderWeightExercices = () => {
+    navigation("/underWeight");
+  };
+  const onIdealWeightExercices = () => {
+    navigation("/idealWeight");
   };
 
-  const textChange = (event) => {
-    const textValue = event.target.value;
-
-    if (textValue.length >= 0) {
-      setGoalText(textValue);
-      setIsTextFilled(true);
-    } else {
-      setIsTextFilled(false);
-    }
+  const onOverWeightExercices = () => {
+    navigation("/overWeight");
   };
 
-  const onInputGoalHandler = async () => {
-    if (storedGoals[0] === "") {
-      storedGoals.shift();
-    }
-
-    const id = uuidv4();
-    const item = [
-      {
-        id: id,
-        goal: goal,
-        goalText: goalText,
-      },
-    ];
-
-    storedGoals.unshift(item[0]);
-    const newItem = storedGoals;
-
-    const updatedUser = {
-      id: loggedUser.id,
-      name: loggedUser.name,
-      email: loggedUser.email,
-      image: loggedUser.image,
-      goals: newItem,
-      balance: loggedUser.balance,
-      lastName: loggedUser.lastName,
-      password: loggedUser.password,
-      expenseItems: loggedUser.expenseItems,
-      incomeItems: loggedUser.incomeItems,
-    };
-    const updatedUserJSON = JSON.stringify(updatedUser);
-    localStorage.setItem('foundUser', updatedUserJSON);
-
-    setGoal("");
-    setGoalText("");
-    setIsGoalFilled(false);
-    setIsTextFilled(false);
-    setCallerEffect(!callerEffect);
+  const onObese = () => {
+    navigation("/obese");
   };
 
-  const onGetBackHandler = () => {
+  const onGetBachHandler = () => {
     navigation("/landingPage");
   };
 
   return (
-    <section className={classes.section}>
-      <button className={classes.getBackButton} onClick={onGetBackHandler}>
-        Voltar
-      </button>
-      <h3>Seu Saldo Atual:</h3>
-      <input
-        className={classes.input}
-        id="balance"
-        type="text"
-        value={storedBalance}
-        disabled={true}
-      />
-      <h3>Escreva abaixo o seu objetivo</h3>
-      <input
-        className={classes.input}
-        id="goal"
-        type="text"
-        value={goalText}
-        onChange={textChange}
-      />
-      <h3>Insira o valor do seu objetivo</h3>
-      <input
-        id="goalValue"
-        type="text"
-        value={goal}
-        onChange={goalChange}
-        className={message ? classes.inputError : classes.input}
-      />
-      {message && (
-        <p className={classes.warning}>
-          Número digitado não pode ser igual ou superior que 1 trilhão
-        </p>
+    <Fragment>
+      {imcValue < 18.5 && (
+        <section>
+          <button className={classes.getBackButton} onClick={onGetBachHandler}>
+            Voltar
+          </button>
+          <button onClick={onUnderWeightExercices} className={classes.button}>
+            Exercícios Detalhados
+          </button>
+          <h2>Treinamento de Resistência</h2>
+          <Card>
+            <h3>Agachamento:</h3>
+            <p>
+              Fortalece quadríceps, isquiotibiais, glúteos e músculos
+              estabilizadores.
+            </p>
+          </Card>
+          <Card>
+            <h3>Supino com Barra:</h3>
+            <p>Trabalha os músculos do peito, ombros e tríceps</p>
+          </Card>
+          <Card>
+            <h3>Levantamento Terra:</h3>
+            <p>
+              Envolvimento de vários grupos musculares, incluindo costas,
+              glúteos, isquiotibiais e core.
+            </p>
+          </Card>
+          <Card>
+            <h3>Dicas Importantes</h3>
+            <p>
+              Aquecimento: Sempre faça um aquecimento antes de iniciar os
+              exercícios para reduzir o risco de lesões.
+            </p>
+            <p>
+              Progressão Gradual: Aumente o peso ou a dificuldade dos exercícios
+              gradualmente ao longo do tempo para desafiar seus músculos.
+            </p>
+            <p>
+              Descanso Adequado: Permita que seus músculos descansem e se
+              recuperem entre os treinos.
+            </p>
+            <p>
+              O descanso é essencial para o crescimento muscular. Nutrição
+              Adequada: Uma dieta rica em proteínas, carboidratos complexos e
+              gorduras saudáveis é essencial para apoiar o ganho muscular.
+            </p>
+            <p>
+              Hidratação: Mantenha-se hidratado durante os treinos e no dia a
+              dia para apoiar a função muscular adequada.
+            </p>
+          </Card>
+        </section>
       )}
-
-      {isGoalFilled && isTextFilled && (
-        <button className={classes.inputButton} onClick={onInputGoalHandler}>
-          Inserir
-        </button>
+      {imcValue > 18.5 && imcValue < 24.9 && (
+        <section>
+          <button className={classes.getBackButton} onClick={onGetBachHandler}>
+            Voltar
+          </button>
+          <button onClick={onIdealWeightExercices} className={classes.button}>
+            Exercícios Detalhados
+          </button>
+          <h2>Treinamento de Força:</h2>
+          <Card>
+            <p>
+              Use pesos que permitam executar de 8 a 12 repetições com boa
+              forma. Isso pode variar dependendo do exercício.
+            </p>
+            <p>
+              Agachamento, levantamento terra, supino, remada, flexões
+              ponderadas e outros exercícios com peso podem ser incluídos.
+            </p>
+          </Card>
+          <h2>Treinamento Cardiovascular:</h2>
+          <Card>
+            <p>
+              Realize atividades aeróbicas, como corrida, ciclismo, natação ou
+              treinos HIIT (High-Intensity Interval Training), por cerca de 30 a
+              60 minutos, de 3 a 5 vezes por semana.
+            </p>
+            <p>
+              Varie entre exercícios de baixa e alta intensidade para desafiar
+              seu corpo de maneira equilibrada.
+            </p>
+          </Card>
+          <h2>Treinamento de Flexibilidade e Mobilidade:</h2>
+          <Card>
+            <p>
+              Dedique tempo para exercícios de alongamento, ioga ou pilates para
+              melhorar a flexibilidade e prevenir lesões.
+            </p>
+          </Card>
+          <h2>Exercícios de Peso Corporal:</h2>
+          <Card>
+            <p>
+              Continuar com exercícios como flexões, afundos, abdominais,
+              pranchas e outros exercícios que utilizam o peso corporal para
+              manter a força funcional.
+            </p>
+          </Card>
+          <h2>Variedade e Progressão:</h2>
+          <Card>
+            <p>
+              Mantenha a rotina variada para evitar estagnação e continuar
+              desafiando o corpo.
+            </p>
+            <p>
+              Aumente gradualmente os pesos nos exercícios de força para
+              promover ganho muscular, se desejado, ou mantenha a carga atual se
+              o objetivo for manter o tônus muscular.
+            </p>
+          </Card>
+          <h2>Descanso Adequado:</h2>
+          <Card>
+            <p>
+              Garanta dias de descanso suficientes para permitir a recuperação
+              adequada entre os treinos.
+            </p>
+          </Card>
+        </section>
       )}
-      {render &&
-        items.map((item, index) => <GoalItem key={index} item={item} />)}
-    </section>
+      {imcValue > 24.9 && imcValue < 29.9 && (
+        <section>
+          <button className={classes.getBackButton} onClick={onGetBachHandler}>
+            Voltar
+          </button>
+          <button onClick={onOverWeightExercices} className={classes.button}>
+            Exercícios Detalhados
+          </button>
+          <h3>Caminhada:</h3>
+          <Card>
+            <p>
+              Uma forma suave de exercício cardiovascular que pode ser adaptada
+              ao seu ritmo e aumentada gradualmente.
+            </p>
+          </Card>
+          <h3>Natação:</h3>
+          <Card>
+            <p>
+              Ótimo para trabalhar todos os grupos musculares, proporciona
+              resistência, sem sobrecarregar as articulações.
+            </p>
+          </Card>
+          <h3>Ciclismo (Estacionário ou ao Ar Livre):</h3>
+          <Card>
+            <p>
+              Excelente exercício cardiovascular de baixo impacto que pode ser
+              adaptado à sua capacidade.
+            </p>
+          </Card>
+          <h3>Yoga:</h3>
+          <Card>
+            <p>
+              Ajuda na flexibilidade, equilíbrio e força, além de focar na
+              respiração e na redução do estresse.
+            </p>
+          </Card>
+          <h3>Treinamento em Circuito:</h3>
+          <Card>
+            <p>
+              Alternar entre exercícios de resistência e cardio, permitindo
+              descanso adequado entre eles.
+            </p>
+          </Card>
+          <h3>Exercícios de Alongamento:</h3>
+          <Card>
+            <p>
+              Importantes para melhorar a flexibilidade e reduzir a rigidez
+              muscular.
+            </p>
+          </Card>
+          <h3>Hidroginástica:</h3>
+          <Card>
+            <p>
+              Ótima opção para pessoas com sobrepeso, pois reduz o impacto nas
+              articulações enquanto proporciona resistência.
+            </p>
+          </Card>
+          <h3>Exercícios de Bodyweight (Peso do Corpo):</h3>
+          <Card>
+            <p>
+              Agachamentos modificados, flexões de parede, elevação pélvica e
+              outros exercícios que utilizam o peso do corpo podem ser úteis.
+            </p>
+          </Card>
+          <h3>Tai Chi:</h3>
+          <Card>
+            <p>
+              Uma prática chinesa que combina movimentos lentos e fluidos,
+              trabalhando a força e a flexibilidade.
+            </p>
+          </Card>
+        </section>
+      )}
+      {imcValue > 29.9 && (
+        <section>
+          <button className={classes.getBackButton} onClick={onGetBachHandler}>
+            Voltar
+          </button>
+          <button onClick={onObese} className={classes.button}>
+            Exercícios Detalhados
+          </button>
+          <h3>Caminhada Moderada:</h3>
+          <Card>
+            <p>
+              Comece com caminhadas curtas e lentas, aumentando gradualmente a
+              duração e a intensidade.
+            </p>
+          </Card>
+          <h3>Natação ou Hidroginástica:</h3>
+          <Card>
+            <p>
+              Ótimos exercícios aeróbicos de baixo impacto que trabalham todos
+              os grupos musculares.
+            </p>
+          </Card>
+          <h3>Bicicleta Ergométrica ou Elíptica:</h3>
+          <Card>
+            <p>
+              Exercícios cardiovasculares de baixo impacto que proporcionam bom
+              treino sem sobrecarregar as articulações.
+            </p>
+          </Card>
+          <h3>Yoga Suave ou Pilates:</h3>
+          <Card>
+            <p>
+              Excelentes para melhorar a flexibilidade, o equilíbrio e a força,
+              além de promover relaxamento.
+            </p>
+          </Card>
+          <h3>Treino com Pesos Leves:</h3>
+          <Card>
+            <p>
+              Use halteres leves para fortalecer os músculos, priorizando
+              movimentos controlados e de baixa pressão sobre as articulações.
+            </p>
+          </Card>
+          <h3>Tai Chi::</h3>
+          <Card>
+            <p>
+              Movimentos suaves e ritmados que podem melhorar a postura, a
+              flexibilidade e a força.
+            </p>
+          </Card>
+          <h3>Aulas de Dança de Baixo Impacto:</h3>
+          <Card>
+            <p>
+              Danças como zumba adaptadas para intensidade e movimentos de menor
+              impacto.
+            </p>
+          </Card>
+          <h3>Exercícios de Alongamento e Respiração:</h3>
+          <Card>
+            <p>
+              Práticas de respiração e alongamento para relaxamento e melhora da
+              flexibilidade.
+            </p>
+          </Card>
+          <h3>Treinamento de Circuito Adaptado:</h3>
+          <Card>
+            <p>Sequências de exercícios de baixo impacto</p>
+          </Card>
+          <h3>Treinamento Funcional Adaptado:</h3>
+          <Card>
+            <p>
+              Exercícios que imitam movimentos do dia a dia, visando melhorar a
+              força e a mobilidade.
+            </p>
+          </Card>
+        </section>
+      )}
+    </Fragment>
   );
 };
 

@@ -1,0 +1,31 @@
+.section {
+  margin: 0 auto;
+  max-width: 20rem;
+  text-align: center;
+}
+
+.aboutApp {
+  color: #8f525a;
+  margin: 1rem 0 10rem 0.2rem;
+}
+
+.h1 {
+    margin-top: 5rem;
+}
+
+.h2 {
+  text-align: center;
+}
+
+.align {
+  margin: 1rem 0 0 3.5rem;
+}
+
+.red {
+  color: #b12639;
+}
+
+.green {
+  color: #46b126;
+}
+

@@ -1,17 +1,19 @@
 import React, { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 
-import store from './store/index'
+import store from "./store/index";
 
+import UnderWeight from "./components/Goal/UnderWeight";
+import IdealWeight from "./components/Goal/IdealWeight";
+import OverWeight from "./components/Goal/OverWeight";
+import Feed from "./components/Goal/Feed";
+import Obese from "./components/Goal/Obese";
 import Goal from "./components/Goal/Goal";
-import Login from "./components/Layout/Login"
-import Income from "./components/Income/Income";
+import About from "./components/Layout/About";
+import Login from "./components/Layout/Login";
 import Profile from "./components/Layout/Profile";
-import Expense from "./components/Expense/Expense";
 import Register from "./components/Layout/Register";
 import LandingPage from "./components/Layout/LandingPage";
-import IncomeHistory from "./components/Income/IncomeHistory";
-import ExpenseHistory from "./components/Expense/ExpenseHistory";
 
 const router = createBrowserRouter([
   {
@@ -21,11 +23,13 @@ const router = createBrowserRouter([
       { path: "/registerPage", element: <Register /> },
       { path: "/landingPage", element: <LandingPage /> },
       { path: "/profilePage", element: <Profile /> },
-      { path: "/expensePage", element: <Expense /> },
-      { path: "/expenseHistoryPage", element: <ExpenseHistory /> },
-      { path: "/incomePage", element: <Income /> },
-      { path: "/incomeHistoryPage", element: <IncomeHistory /> },
+      { path: "/aboutPage", element: <About /> },
       { path: "/goalPage", element: <Goal /> },
+      { path: "/underWeight", element: <UnderWeight /> },
+      { path: "/idealWeight", element: <IdealWeight /> },
+      { path: "/overWeight", element: <OverWeight /> },
+      { path: "/obese", element: <Obese /> },
+      { path: "/feed", element: <Feed /> },
     ],
   },
 ]);

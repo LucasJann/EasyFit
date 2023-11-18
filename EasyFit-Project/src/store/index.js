@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import keySlice from "./key-slice";
-import callerSlice from "./caller-slice";
+import imcCalcSlice from "./imc-slice";
 
 const store = configureStore({
   reducer: {
     key: keySlice.reducer,
-    call: callerSlice.reducer,
+    imcCalc: imcCalcSlice.reducer,
   },
 });
 

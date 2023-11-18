@@ -8,6 +8,10 @@
   border-radius: 0.5rem;
 }
 
+.h2 {
+  text-align: start;
+}
+
 .paragraph {
   color: rgb(153, 159, 165);
   margin: -0.4rem 0 0 0.2rem;
@@ -19,6 +23,8 @@
 }
 
 .loginBtn {
+  color: black;
+  font-weight: bold;
   width: 95%;
   border: none;
   margin: 4rem 0 0 0.4rem;

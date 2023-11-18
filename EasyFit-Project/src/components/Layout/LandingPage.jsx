@@ -1,5 +1,5 @@
 import classes from "./LandingPage.module.css";
-import landingPage from "../../Imgs/money.png";
+import image from "../../Imgs/logo.jpeg"
 
 import { useNavigate } from "react-router-dom";
 
@@ -10,8 +10,8 @@ const LandingPage = () => {
     navigation("/profilePage");
   };
 
-  const expensePageHandler = () => {
-    navigation("/expensePage");
+  const feedPageHandler = () => {
+    navigation("/feed");
   };
 
   const goalPageHandler = () => {
@@ -20,16 +20,16 @@ const LandingPage = () => {
 
   return (
     <div className={classes.container}>
-      <img src={landingPage} className={classes.image} alt="A landing page" />
+      <img src={image} className={classes.image} alt="A landing page" />
       <ul>
         <li>
           <button onClick={profilePageHandler}>Perfil</button>
         </li>
         <li>
-          <button onClick={expensePageHandler}>Minhas Finanças</button>
+          <button onClick={feedPageHandler}>Alimentação</button>
         </li>
         <li>
-          <button onClick={goalPageHandler}>Objetivos</button>
+          <button onClick={goalPageHandler}>Treinamento</button>
         </li>
       </ul>
     </div>

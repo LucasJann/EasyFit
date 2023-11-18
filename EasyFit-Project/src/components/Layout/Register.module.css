@@ -3,11 +3,21 @@ form {
   max-width: 20rem;
 }
 
+.h2 {
+  text-align: start;
+}
+
 .container {
   text-align: center;
 }
 
+p {
+  text-align: start;
+}
+
 .loginBtn {
+  color: black;
+  font-weight: bold;
   width: 20%;
   margin: 0.2rem 0 0 15.3rem;
   padding: 0.2rem;
@@ -41,6 +51,8 @@ input {
 }
 
 .registerBtn {
+  color: black;
+  font-weight: bold;
   width: 96%;
   border: none;
   padding: 0.4em;

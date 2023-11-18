@@ -1,4 +1,4 @@
-import image from "../../Imgs/finances.jpg";
+import image from "../../Imgs/logo.jpeg";
 import classes from "./Register.module.css";
 
 import { v4 as uuidv4 } from "uuid";
@@ -86,25 +86,22 @@ const Register = () => {
         const id = uuidv4();
         const newLogin = {
           id,
+          imc: 0.0,
           name: name,
           email: email,
-          goals: [""],
-          balance: "0",
           lastName: lastName,
           password: password,
-          incomeItems: [""],
-          expenseItems: [""],
         };
 
         await fetch(
-          "https://react-http-f8211-default-rtdb.firebaseio.com/logins.json",
+          "https://react-http-f8211-default-rtdb.firebaseio.com/easyfit.json",
           {
             method: "POST",
             body: JSON.stringify(newLogin),
           }
         );
 
-        localStorage.setItem('foundUser', JSON.stringify(newLogin));
+        localStorage.setItem("foundUser", JSON.stringify(newLogin));
         navigation("/");
       }
     };
@@ -244,7 +241,7 @@ const Register = () => {
           className={classes.image}
         />
         <div>
-          <h2>Nome</h2>
+          <h2 className={classes.h2}>Nome</h2>
           <input onChange={nameChangeHandler} className={nameStyle()} />
           {nameError && (
             <p className={classes.errorMessage}>
@@ -252,7 +249,7 @@ const Register = () => {
               especiais, e clique novamente em Registrar
             </p>
           )}
-          <h2>Sobrenome</h2>
+          <h2 className={classes.h2}>Sobrenome</h2>
           <input onChange={lastNameChangeHandler} className={lastNameStyle()} />
           {lastNameError && (
             <p className={classes.errorMessage}>
@@ -260,7 +257,7 @@ const Register = () => {
               especiais, e clique novamente em Registrar
             </p>
           )}
-          <h2>Email</h2>
+          <h2 className={classes.h2}>Email</h2>
           <input
             type="email"
             onChange={emailChangeHandler}
@@ -271,13 +268,13 @@ const Register = () => {
               Por favor, insira um email válido! E clique novamente em Registrar
             </p>
           )}
-          <h2>Senha</h2>
+          <h2 className={classes.h2}>Senha</h2>
           <input
             type="password"
             onChange={passwordChangeHandler}
             className={passwordStyle()}
           />
-          <h2>Confirmar Senha</h2>
+          <h2 className={classes.h2}>Confirmar Senha</h2>
           <input
             type="password"
             onChange={confirmPasswordChangeHandler}

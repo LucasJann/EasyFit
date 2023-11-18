@@ -7,7 +7,6 @@ const keySlice = createSlice({
   },
   reducers: {
     storeKey(state, action) {
-      console.log(action.payload);
       state.code = action.payload;
     },
   },

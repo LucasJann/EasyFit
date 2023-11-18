@@ -11,6 +11,7 @@
   left: 2rem;
   width: 70%;
   position: relative;
+  border-radius: 1rem;
 }
 
 ul {
@@ -18,18 +19,19 @@ ul {
   list-style: none;
 }
 
-button {
+button { 
+  color: black;
+  font-weight: bold;
   width: 70%;
-  color: #fff;
   border: none;
   cursor: pointer;
   padding: 0.5rem;
   font-size: 1rem;
   border-radius: 0.5rem;
-  background-color: #ab9c15;
+  background-color: #ffffff;
 }
 
 button:hover {
-  background-color: #8a7a0f;
+  background-color: #8f8f8f;
 }
 
